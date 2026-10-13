@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Portafolio de Diego Acosta: visuales para conciertos y 3D motion.">
+<title>Diego Acosta Portafolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed stage hero (3D object lit by the cursor, name set huge over it), sticky nav, then two project galleries and a contact strip. Single dark look on purpose: it's a stage. */
+:root {
+  --stage: #0d0b14;
+  --stage-2: #15121f;
+  --fg: #f2eef8;
+  --muted: #a39cb3;
+  --line: #2a2538;
+  --magenta: #ff3d8b;
+  --amber: #ffb547;
+  --cobalt: #4b5bff;
+  --f-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--stage); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.55; overflow-x: hidden; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 10; padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 14px; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: background .3s, backdrop-filter .3s; }
+nav.solid { background: color-mix(in srgb, var(--stage) 82%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.mark { font: 700 14px var(--f-display); letter-spacing: .02em; text-decoration: none; }
+.links { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.links a { font: 500 13px var(--f-mono); text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 999px; border: 1px solid transparent; transition: color .2s, border-color .2s; }
+.links a:hover { color: var(--fg); border-color: var(--line); }
+
+/* HERO */
+.hero { position: relative; height: clamp(560px, 92vh, 900px); overflow: hidden; isolation: isolate; }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+#stage:active { cursor: grabbing; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 50% at 50% 55%, #2a1640 0%, transparent 70%), var(--stage); }
+.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(transparent, var(--stage)); pointer-events: none; }
+.hero-copy { position: absolute; left: 0; right: 0; bottom: clamp(28px, 7vh, 72px); z-index: 2; padding-inline: 16px; pointer-events: none; }
+.hero-inner { max-width: 1240px; margin: 0 auto; }
+.role { font: 500 13px var(--f-mono); color: var(--amber); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 12px; }
+h1 { font-family: var(--f-display); font-weight: 900; font-size: clamp(3rem, 12.5vw, 11rem); line-height: .88; letter-spacing: -0.04em; margin: 0; text-transform: uppercase; mix-blend-mode: difference; }
+h1 span { display: block; }
+h1 span:last-child { padding-left: clamp(0px, 14vw, 220px); }
+.hint { position: absolute; right: 16px; top: calc(env(safe-area-inset-top, 0px) + 84px); z-index: 2; font: 400 12px var(--f-mono); color: var(--muted); display: flex; align-items: center; gap: 8px; pointer-events: none; }
+.hint i { width: 8px; height: 8px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 12px var(--magenta); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+.gyro { position: absolute; right: 16px; top: calc(env(safe-area-inset-top, 0px) + 76px); z-index: 3; font: 500 12px var(--f-mono); color: var(--fg); background: rgba(13,11,20,.6); backdrop-filter: blur(8px); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+
+/* SECTIONS */
+main { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; }
+.block { padding-block: clamp(48px, 9vw, 110px) 0; }
+.block-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 40px; margin-bottom: 32px; }
+.eyebrow { font: 500 12px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 10px; }
+h2 { font-family: var(--f-display); font-weight: 700; font-size: clamp(2rem, 6vw, 4.2rem); line-height: .95; letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
+.block-head p { max-width: 44ch; color: var(--muted); margin: 0; }
+
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.card { grid-column: span 4; position: relative; text-decoration: none; display: flex; flex-direction: column; gap: 14px; }
+.card.wide { grid-column: span 8; }
+.thumb { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 6px; overflow: hidden; background: var(--stage-2); border: 1px solid var(--line); }
+.card.wide .thumb { aspect-ratio: auto; height: 100%; min-height: 260px; }
+.thumb .art { position: absolute; inset: -20%; transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .6s; }
+.card:hover .thumb .art, .card:focus-visible .thumb .art { transform: scale(1.08) rotate(-2deg); filter: saturate(1.3) brightness(1.1); }
+.tag { position: absolute; top: 12px; left: 12px; font: 500 11px var(--f-mono); text-transform: uppercase; letter-spacing: .1em; background: rgba(13,11,20,.7); backdrop-filter: blur(6px); padding: 4px 8px; border-radius: 4px; color: var(--fg); }
+.play { position: absolute; right: 14px; bottom: 14px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--fg); color: var(--stage); transform: scale(.7); opacity: 0; transition: transform .35s, opacity .35s; }
+.card:hover .play, .card:focus-visible .play { transform: scale(1); opacity: 1; }
+.play svg { width: 16px; height: 16px; margin-left: 2px; }
+.meta { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.meta h3 { font: 600 1.05rem var(--f-body); margin: 0; }
+.meta span { font: 400 12px var(--f-mono); color: var(--muted); white-space: nowrap; }
+.card p { margin: -8px 0 0; color: var(--muted); font-size: 14.5px; }
+
+/* placeholder art: stage-light compositions */
+.a1 { background: radial-gradient(circle at 30% 40%, var(--magenta) 0 12%, transparent 30%), radial-gradient(circle at 70% 60%, var(--cobalt) 0 10%, transparent 35%), repeating-conic-gradient(from 0deg at 50% 110%, #1b1530 0 4deg, #0d0b14 4deg 9deg); }
+.a2 { background: repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,181,71,.85) 18px 20px), linear-gradient(180deg, #2b0f2a, #0d0b14 70%); }
+.a3 { background: radial-gradient(ellipse 40% 60% at 50% 100%, var(--amber), transparent 70%), conic-gradient(from 200deg at 50% 100%, transparent 0 20deg, rgba(255,61,139,.7) 25deg, transparent 32deg, transparent 50deg, rgba(75,91,255,.7) 55deg, transparent 62deg, transparent 80deg, rgba(255,61,139,.6) 85deg, transparent 92deg, transparent 360deg), #0d0b14; }
+.a4 { background: radial-gradient(circle at 50% 50%, transparent 0 18%, var(--cobalt) 19% 20%, transparent 21% 32%, var(--magenta) 33% 34%, transparent 35% 46%, var(--amber) 47% 48%, transparent 49%), #110e1c; }
+.a5 { background: linear-gradient(135deg, #4b5bff 0%, #ff3d8b 50%, #ffb547 100%); }
+.a5::after { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 60% 40%, transparent 0 14px, rgba(13,11,20,.55) 14px 16px); }
+.a6 { background: conic-gradient(from 45deg at 40% 55%, #ff3d8b, #4b5bff, #0d0b14, #ffb547, #ff3d8b); filter: blur(0); }
+.a6::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 0 49%, rgba(13,11,20,.9) 49% 51%, transparent 51%) 0 0 / 100% 22px; }
+
+/* ABOUT + CONTACT */
+.about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; align-items: start; }
+.about p.lead { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.25rem, 2.6vw, 1.9rem); line-height: 1.3; letter-spacing: -0.01em; margin: 0; max-width: 30ch; }
+.skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.skills span { font: 500 13px var(--f-mono); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; color: var(--muted); }
+.contact { margin-top: clamp(64px, 10vw, 120px); padding-block: 40px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+.contact h2 { font-size: clamp(2.2rem, 8vw, 6rem); }
+.contact h2 em { font-style: normal; background: linear-gradient(90deg, var(--magenta), var(--amber)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.channels { display: grid; gap: 10px; min-width: 0; }
+.channels div { display: flex; gap: 14px; align-items: baseline; font-size: 15px; }
+.channels dt { font: 500 11px var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .1em; width: 80px; }
+.channels dd { margin: 0; overflow-wrap: anywhere; }
+footer { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; font: 400 12px var(--f-mono); color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 860px) {
+  .card, .card.wide { grid-column: span 6; }
+  .card.wide .thumb { aspect-ratio: 4 / 3; height: auto; min-height: 0; }
+  .about { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .card, .card.wide { grid-column: span 12; }
+  .links a:not(:last-child) { display: none; }
+  .hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hint i { animation: none; }
+  .thumb .art { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="mark" href="#top">D/A</a>
+  <div class="links">
+    <a href="#conciertos">Conciertos</a>
+    <a href="#motion">3D Motion</a>
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="stage" aria-label="Objeto 3D interactivo que reacciona al movimiento del mouse"></canvas>
+  <div class="hint"><i></i>Mueve el mouse</div>
+  <button id="gyro" class="gyro" type="button" hidden>Mover con el celular</button>
+  <div class="hero-copy">
+    <div class="hero-inner">
+      <p class="role">Visuales en vivo · 3D · Motion</p>
+      <h1><span>Diego</span><span>Acosta</span></h1>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block" id="conciertos">
+    <div class="block-head">
+      <div>
+        <p class="eyebrow">Escenario</p>
+        <h2>Visuales para conciertos</h2>
+      </div>
+      <p>Contenido para pantallas LED, proyección y shows en vivo, sincronizado con la música y pensado para verse a 50 metros del escenario.</p>
+    </div>
+    <div class="grid">
+      <a class="card wide" href="#conciertos">
+        <div class="thumb"><div class="art a1"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Pantalla principal, festival al aire libre</h3><span>LED 16:9 · 4K</span></div>
+        <p>Paquete de loops reactivos al audio para un set de 90 minutos.</p>
+      </a>
+      <a class="card" href="#conciertos">
+        <div class="thumb"><div class="art a2"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Gira en recintos cerrados</h3><span>Resolume</span></div>
+        <p>Visuales por canción con transiciones en tiempo real.</p>
+      </a>
+      <a class="card" href="#conciertos">
+        <div class="thumb"><div class="art a3"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Intro de show</h3><span>2:30 min</span></div>
+        <p>Apertura cinemática antes de que salga el artista.</p>
+      </a>
+      <a class="card wide" href="#conciertos">
+        <div class="thumb"><div class="art a4"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Mapping sobre escenografía</h3><span>Proyección</span></div>
+        <p>Contenido ajustado a la forma del escenario con TouchDesigner.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="block" id="motion">
+    <div class="block-head">
+      <div>
+        <p class="eyebrow">Estudio</p>
+        <h2>3D Motion</h2>
+      </div>
+      <p>Animación 3D para marcas, lanzamientos musicales y redes: objetos, materiales y cámaras que se sienten físicos.</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="#motion">
+        <div class="thumb"><div class="art a5"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Portada animada de sencillo</h3><span>Blender</span></div>
+        <p>Loop vertical para Spotify Canvas e Instagram.</p>
+      </a>
+      <a class="card" href="#motion">
+        <div class="thumb"><div class="art a6"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Logo en 3D</h3><span>After Effects</span></div>
+        <p>Animación de marca de 6 segundos con sonido.</p>
+      </a>
+      <a class="card" href="#motion">
+        <div class="thumb"><div class="art a1" style="filter:hue-rotate(140deg)"></div><span class="tag">Ejemplo</span><span class="play"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.5v13l11-6.5z"/></svg></span></div>
+        <div class="meta"><h3>Producto en estudio virtual</h3><span>Render</span></div>
+        <p>Toma de producto con iluminación y cámara en 3D.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="block" id="sobre-mi">
+    <div class="about">
+      <div>
+        <p class="eyebrow">Sobre mí</p>
+        <p class="lead">Hago que la música se vea. Diseño visuales para shows en vivo y animación 3D para artistas y marcas.</p>
+      </div>
+      <div>
+        <p style="color:var(--muted);margin:0;max-width:60ch">Aquí va un párrafo corto sobre ti: dónde trabajas, con quién has colaborado y qué tipo de proyectos te interesan. Dos o tres líneas bastan.</p>
+        <div class="skills"><span>Blender</span><span>After Effects</span><span>Cinema 4D</span><span>TouchDesigner</span><span>Resolume</span><span>Photoshop</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <h2>Hagamos<br><em>algo en vivo.</em></h2>
+    <dl class="channels">
+      <div><dt>Correo</dt><dd>tu-correo@ejemplo.com</dd></div>
+      <div><dt>Instagram</dt><dd>@tu-usuario</dd></div>
+      <div><dt>Ubicación</dt><dd>Ciudad de México</dd></div>
+    </dl>
+  </section>
+</main>
+
+<footer><span>© 2026 Diego Acosta</span><span>Los proyectos marcados como “Ejemplo” se reemplazan por tu trabajo</span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// Sticky nav background after scrolling past the top
+const nav = document.getElementById("nav");
+const onScroll = () => nav.classList.toggle("solid", window.scrollY > 40);
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+(function () {
+  const canvas = document.getElementById("stage");
+  const hero = canvas.parentElement;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!window.THREE) return;
+
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); }
+  catch (e) { return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+  camera.position.set(0, 0, 6.2);
+
+  const noise = `
+    vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+    vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+    vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+    float snoise(vec3 v){
+      const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+      vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+      i=mod289(i);
+      vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+      float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+      vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+      vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+      vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+      vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=norm.x; p1*=norm.y; p2*=norm.z; p3*=norm.w;
+      vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+      return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+    }`;
+
+  const uniforms = {
+    uTime: { value: 0 },
+    uEnergy: { value: 0 },
+    uLight: { value: new THREE.Vector3(0.4, 0.5, 1.0) },
+    uLocal: { value: new THREE.Vector3(0, 0, 1) }
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    extensions: { derivatives: true },
+    vertexShader: noise + `
+      uniform float uTime; uniform float uEnergy; uniform vec3 uLocal;
+      varying vec3 vPos; varying float vDisp;
+      void main(){
+        float pull = smoothstep(0.2, 1.0, dot(normalize(position), uLocal));
+        float n = snoise(position*1.3 + vec3(0.0, uTime*0.22, 0.0));
+        float n2 = snoise(position*3.2 - uTime*0.35)*0.35;
+        float d = (n + n2) * (0.16 + uEnergy*0.42) + pull*(0.12 + uEnergy*0.25);
+        vec3 p = position + normal*d;
+        vDisp = d;
+        vec4 mv = modelViewMatrix*vec4(p,1.0);
+        vPos = mv.xyz;
+        gl_Position = projectionMatrix*mv;
+      }`,
+    fragmentShader: `
+      uniform vec3 uLight; uniform float uEnergy;
+      varying vec3 vPos; varying float vDisp;
+      void main(){
+        vec3 n = normalize(cross(dFdx(vPos), dFdy(vPos)));
+        vec3 v = normalize(-vPos);
+        float fres = pow(1.0 - abs(dot(n, v)), 2.2);
+        float t = clamp(vDisp*2.2 + 0.45 + n.y*0.25, 0.0, 1.0);
+        vec3 cobalt = vec3(0.29,0.36,1.0);
+        vec3 magenta = vec3(1.0,0.24,0.55);
+        vec3 amber = vec3(1.0,0.71,0.28);
+        vec3 col = mix(cobalt, magenta, smoothstep(0.1, 0.6, t));
+        col = mix(col, amber, smoothstep(0.55, 1.0, t));
+        float diff = max(dot(n, normalize(uLight)), 0.0);
+        float spec = pow(max(dot(reflect(-normalize(uLight), n), v), 0.0), 28.0);
+        col = col*(0.18 + 0.95*diff) + spec*vec3(1.0,0.92,0.85)*0.8 + fres*vec3(1.0,0.55,0.8)*(0.45+uEnergy*0.6);
+        gl_FragColor = vec4(col, 1.0);
+      }`
+  });
+
+  const blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 24), material);
+  const group = new THREE.Group();
+  group.add(blob);
+  scene.add(group);
+
+  // Dust of light around the object
+  const count = 700, pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const r = 2.1 + Math.random() * 1.6, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+    pos[i*3] = r * Math.sin(ph) * Math.cos(th); pos[i*3+1] = r * Math.cos(ph) * 0.7; pos[i*3+2] = r * Math.sin(ph) * Math.sin(th);
+  }
+  const dustGeo = new THREE.BufferGeometry();
+  dustGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0xffd2e6, size: 0.018, transparent: true, opacity: 0.7, depthWrite: false }));
+  scene.add(dust);
+
+  // Pointer state
+  const mouse = new THREE.Vector2(0, 0), target = new THREE.Vector2(0, 0);
+  let energy = 0, lastX = null, lastY = null, kick = 0, inside = false;
+  function onMove(e) {
+    const r = hero.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    const y = -(((e.clientY - r.top) / r.height) * 2 - 1);
+    if (lastX !== null) energy = Math.min(1, energy + Math.hypot(x - lastX, y - lastY) * 2.2);
+    lastX = x; lastY = y; target.set(x, y); inside = true;
+  }
+  hero.addEventListener("pointermove", onMove);
+  hero.addEventListener("pointerleave", () => { inside = false; lastX = lastY = null; });
+  canvas.addEventListener("pointerdown", () => { kick = 1; });
+
+  // Gyroscope: tilt the phone to move the sphere (needs HTTPS; iPhone asks permission after a tap)
+  let gyroOn = false, lastG = null;
+  const clamp = v => Math.max(-1, Math.min(1, v));
+  function onTilt(e) {
+    if (e.gamma == null || e.beta == null) return;
+    const x = clamp(e.gamma / 30);
+    const y = clamp(-(e.beta - 45) / 30);
+    if (lastG) energy = Math.min(1, energy + Math.hypot(x - lastG[0], y - lastG[1]) * 1.2);
+    lastG = [x, y];
+    target.set(x, y); inside = true;
+    if (!gyroOn) { gyroOn = true; gyroBtn.hidden = true; }
+  }
+  const gyroBtn = document.getElementById("gyro");
+  const touchDevice = window.matchMedia("(pointer: coarse)").matches;
+  if (touchDevice && "DeviceOrientationEvent" in window) {
+    if (typeof DeviceOrientationEvent.requestPermission === "function") {
+      // iPhone / iPad: permission must come from a tap
+      gyroBtn.hidden = false;
+      gyroBtn.addEventListener("click", async () => {
+        try {
+          const res = await DeviceOrientationEvent.requestPermission();
+          if (res === "granted") window.addEventListener("deviceorientation", onTilt);
+        } catch (e) {}
+        gyroBtn.hidden = true;
+      });
+    } else {
+      // Android: works without asking
+      window.addEventListener("deviceorientation", onTilt);
+    }
+  }
+
+  function resize() {
+    const w = hero.clientWidth, h = hero.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    const s = w < 600 ? 0.78 : 1;
+    group.scale.setScalar(s);
+    group.position.set(w < 600 ? 0 : 0.9, w < 600 ? 0.55 : 0.25, 0);
+  }
+  window.addEventListener("resize", resize); resize();
+
+  let visible = true;
+  new IntersectionObserver(([en]) => { visible = en.isIntersecting; }).observe(hero);
+
+  const clock = new THREE.Clock();
+  const inv = new THREE.Matrix4(), tmp = new THREE.Vector3();
+  function frame() {
+    requestAnimationFrame(frame);
+    if (!visible) return;
+    const dt = Math.min(clock.getDelta(), 0.05);
+    const speed = reduce ? 0.25 : 1;
+    uniforms.uTime.value += dt * speed;
+
+    if (!inside) target.multiplyScalar(0.98);
+    mouse.lerp(target, 0.08);
+    energy *= 0.94; kick *= 0.9;
+    uniforms.uEnergy.value += ((energy + kick) - uniforms.uEnergy.value) * 0.12;
+
+    // Object leans toward the cursor and keeps a slow spin
+    blob.rotation.y += dt * 0.15 * speed;
+    group.rotation.x += ((-mouse.y * 0.55) - group.rotation.x) * 0.06;
+    group.rotation.y += ((mouse.x * 0.8) - group.rotation.y) * 0.06;
+    const pulse = 1 + uniforms.uEnergy.value * 0.06;
+    blob.scale.setScalar(pulse);
+
+    // Light follows the cursor (view space), bulge points at the cursor (object space)
+    uniforms.uLight.value.set(mouse.x * 2.5, mouse.y * 2.5, 1.6);
+    tmp.set(mouse.x * 3, mouse.y * 3, 5).normalize();
+    blob.updateMatrixWorld();
+    inv.copy(blob.matrixWorld).invert();
+    tmp.transformDirection(inv);
+    uniforms.uLocal.value.copy(tmp);
+
+    dust.rotation.y += dt * 0.04 * speed;
+    dust.rotation.x = mouse.y * 0.15;
+
+    renderer.render(scene, camera);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
